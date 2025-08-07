@@ -1,0 +1,57 @@
+#include<iostream>
+using namespace std;
+int main()
+{
+    srand(1234);
+    int a;
+    a=5;
+    cout<<&a<<" "<<a<<endl;
+    
+    int* b = new int(3);
+    cout<<&b<<" "<<b<<" "<<*b<<endl;
+    delete b;
+    cout<<&b<<" "<<b<<" "<<*b<<endl;
+    b = &a;
+    cout<<&b<<" "<<b<<" "<<*b<<endl;
+    *b = 12;
+    cout<<&a<<" "<<a<<endl;
+    cout<<&b<<" "<<b<<" "<<*b<<endl;
+    
+    int tam = 5;
+    int* v = new int[tam];
+    
+    for (int i = 0; i < tam; i++) {
+        v[i] = rand()%100;
+    }
+    
+    for (int i = 0; i < tam; i++) {
+        cout<<v[i]<<"\t";
+    }
+    cout<<endl;
+    
+    int* v_temp = new int[tam*2];
+    
+    for (int i = 0; i < tam; i++) {
+        v_temp[i] = v[i];
+    }
+    
+    tam *= 2;
+    
+    delete[] v;
+    
+    v = v_temp;
+    
+    for (int i = tam/2; i < tam; i++) {
+        v[i] = rand()%100;
+    }
+    
+    for (int i = 0; i < tam; i++) {
+        cout<<v[i]<<"\t";
+    }
+    
+    cout<<endl;
+    delete[] v;
+    
+    
+    return 0;
+}
