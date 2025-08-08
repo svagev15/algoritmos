@@ -1,19 +1,21 @@
 #include<iostream>
 using namespace std;
 
+//la clase es como un molde
 class Vector{
-private:
+private://atributos(datos)
     int* v;
     int capacidad;    
     int size;
     
-public:
-    Vector(){
+public://metodos (acciones)
+    Vector(){//constructor, se inicializan las variables de arriba
         capacidad = 5;
         size = 0;
         v = new int[capacidad];
     }
-    
+
+    //se usa para tener una capacidad dinamica del vector
     Vector(int t){
         if(t <= 0){
             t = 1;
@@ -22,11 +24,13 @@ public:
         size = 0;
         v = new int[capacidad];
     }
-    
+
+    //agrega un elemento al final del vector 
     void add(int dato){
         v[size++] = dato;
     }
-    
+
+    //imprime el vector
     void print(){
         for (int i = 0; i < size; i++) {
             cout<<v[i]<<"\t";
