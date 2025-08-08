@@ -2,21 +2,23 @@
 using namespace std;
 int main()
 {
-    srand(1234);
+    srand(1234);//semilla
     int n, m;
     cout<<"Ingrese el valor de n: ";
     cin>>n;
     cout<<"Ingrese el valor de m: ";
     cin>>m;
     cout<<"La matriz A tendrá tamaño de "<<n<<" x "<<m<<endl;
-    
+
+    //crear la matriz
     int a[n][m];
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {
             a[i][j] = rand()%100;
         }
     }
-    
+
+    //imprimir la matriz
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {
             cout<<a[i][j]<<"\t";
@@ -51,7 +53,8 @@ int main()
     }
     
     int c[n][p];
-    
+
+    //multiplicar matrices
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < p; j++) {
             c[i][j] = 0;
