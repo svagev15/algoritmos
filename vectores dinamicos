@@ -25,10 +25,55 @@ public://metodos (acciones)
         v = new int[capacidad];
     }
 
+    ~Vector() {
+        delete[] v;
+    }
+
     //agrega un elemento al final del vector 
     void add(int dato){
+        if (size>=capacidad){//si el tamano del vector es igual o mayor que la capacidad, entonces se redimenciona la capacidad del vector
+            resize();
+        }
         v[size++] = dato;
     }
+
+    //redimencionar la capacidad del vector
+    void resize() {
+        int nuevaCapacidad = capacidad * 2;//se crea un un vector nuevo con capacidad del doble del primer vector
+        int* nuevoVector = new int[nuevaCapacidad];//se copia el vector anterior en un nuevo vector
+
+        //se pasan los datos del vector anterior al nuevo
+        for(int i = 0; i < size; i++) {
+            nuevoVector[i] = v[i];
+        }
+
+        delete[] v;//se elimina el vector1
+        v = nuevoVector;//se actualiza el nuevo vector
+        capacidad = nuevaCapacidad;//se actualiza la capacidad del vector
+    }
+
+    //insertar un numero en una posicion del vector 
+     void insert(int posicion, int dato) {
+        if(posicion < 0 || posicion > size) {//si la posicion donde desea insertar el numero es meno a cero o mayor al tamaño, no se puede agregar
+            cout << "POSICION ERRONEA" << endl;
+            return;
+        }
+
+        //si al insertar el numero en el vector el tamaño supera la capacidad, toca aumentar el tamaño
+        if(size >= capacidad) {
+            resize();
+        }
+        
+        // Forma de desplazar los datos a la derecha
+        for(int i = size; i > posicion; i--) {
+            v[i] = v[i-1];
+        }
+
+        //luego se debe actualizar los datos 
+        v[posicion] = dato;
+        size++;//luego se debe actualizar el tamano
+    }
+
 
     //imprime el vector
     void print(){
@@ -44,18 +89,27 @@ public://metodos (acciones)
 
 
 
-
-int main()
-{
-    srand(1234);
-    
+int main() {
     Vector v;
     
-    for (int i = 0; i < 6; i++) {
-        v.add(i*17);
+    for(int i = 0; i < 6; i++) {
+        v.add(i * 10);
     }
     
+    cout << "Vector inicial:" << endl;
     v.print();
     
-    return 0;
+
+    int datoUsuario;
+    cout << "\nIngrese el dato que deseaS insertar en la posicion 3: ";
+    cin >> datoUsuario;
+    
+    v.insert(3, datoUsuario);
+    
+    cout << "\nVector despues de insertar " << datoUsuario << " en posicion 3:" << endl;
+    v.print();
+    
+    return 0;
 }
+
+
