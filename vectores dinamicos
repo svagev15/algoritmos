@@ -83,6 +83,23 @@ public://metodos (acciones)
         cout<<endl;
     }
     
+    //elimnar una posicion
+    void eliminarp (int posicion_r){//recorre el vector desde que la posicion de eliminado sea igual a la posicon en el vector, ese lugar lo ocupa el de la derecha
+        for (int i=posicion_r; i<size; i++){
+            v[i]=v[i+1];
+        }
+        size--;//actualizamos el tam,ano del vector
+    }
+    
+    //elimina todos los elementos
+    void eliminar_a(int elementos){
+        for (int i=0; i<size; i++){
+            if (v[i]==elementos){//==para que sea exactamente el mismo
+                eliminarp(i);//para usar la funcion
+            }
+            
+        }
+    }
     
 };
 
@@ -99,17 +116,14 @@ int main() {
     cout << "Vector inicial:" << endl;
     v.print();
     
-
-    int datoUsuario;
-    cout << "\nIngrese el dato que deseaS insertar en la posicion 3: ";
-    cin >> datoUsuario;
+    int elementos;
+    cout << "\nIngrese el/los elementos que desea eliminar: ";
+    cin >> elementos;
+    v.eliminar_a(elementos);
     
-    v.insert(3, datoUsuario);
     
-    cout << "\nVector despues de insertar " << datoUsuario << " en posicion 3:" << endl;
     v.print();
     
-    return 0;
+    return 0;
 }
-
 
