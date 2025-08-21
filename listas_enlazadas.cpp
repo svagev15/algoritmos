@@ -1,3 +1,6 @@
+//poner remove, find, removeall
+
+
 #include<iostream>
 using namespace std;
 
@@ -63,9 +66,43 @@ public:
         size++;
     }
     
-    void print(){
+    
+    void insert(int p, int dato){
+        if (p <0 || p>size){//si la posicion es mayor al tamaño o menos a cero no se puede insertar
+            cout<<"posicion invalida " << endl;
+            return ;
+        }
+        Nodo<T> *nodonuevo = new Nodo<T>(dato); //se crea el nuevo nodo en donde se alamcena el elemtneo que inserte el usuario
         
+        if (p==0){//si quiereo insertar el dato al inicio 
+            nuevoNodo -> setNext(ptr);
+            ptr = nuevoNodo;
+        }
+        else {
+            Nodo<T>* temp = ptr; // se crea un nodo ¿temporal para recorreer y empezamos desde el primero
+            int i =0;
+
+            while(i< p-1 ){ // mientras no lleguemos al final
+                temp = temp->getNext(); // avanzamos al siguiente
+            }
+            nuevoNodo->setNext(temp->getNext());//el nuevo nodo apunta al que estaba despues de temp
+            temp->setNext(nuevoNodo);//el anterior a temp apunta al nuevo nodo
+        }
+            
+        }
     }
+
+    
+    void print(){
+        Nodo<T>* temp = ptr; // empezamos desde el primero
+        while(temp != nullptr){ // mientras no lleguemos al final
+            cout << temp->getDato() << " "; // imprimimos el dato
+            temp = temp->getNext(); // avanzamos al siguiente
+        }
+        cout << endl; // salto de línea al final
+    }
+    
+
     
 };
 
@@ -80,6 +117,7 @@ int main()
     }
     
     l.print();
+    l.insert(2,40);
     
     return 0;
 }
