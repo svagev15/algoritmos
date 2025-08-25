@@ -1,4 +1,3 @@
-//mejorar la funciones del final
 #include <iostream>
 
 using namespace std;
@@ -77,7 +76,7 @@ private:
     int enfermedad;
 public:
     Cita() {
-        paciente = -1; //por que -1?
+        paciente = -1; 
         medico = -1;
         enfermedad = -1;
     }
@@ -342,72 +341,93 @@ public:
     }
 
     int enfermedad_mayor() {
-        int* frecuencia_por_enfermedad = crear_arreglo(ne); 
-
-        for (int j = 0; j < ne; j++) {
-            for (int i = 0; i < nc; i++) {
-                frecuencia_por_enfermedad[j] += matriz[i][j];
+        int max = 0;
+        int enfermedad = -1;
+        for (int i = 0; i < ne; i++) {
+            int total = 0;
+            for (int j = 0; j < nm; j++) {
+                total += matriz[j][i];
+            }
+            if (total > max) {
+                max = total;
+                enfermedad = i;
             }
         }
-
-        int max_frecuencia = 0;
-        int enfermedad_mayor = -1;
-        for (int j = 0; j < ne; j++) {
-            if (frecuencia_por_enfermedad[j] > max_frecuencia) {
-                max_frecuencia = frecuencia_por_enfermedad[j];
-                enfermedad_mayor = j;
-            }
-        }
-
-        destruir_arreglo(frecuencia_por_enfermedad);
-        return enfermedad_mayor;
+        return enfermedad;
     }
+
     
     int enfermedad_menor() {
-        int* frecuencia_por_enfermedad = crear_arreglo(ne);  
-        for (int j = 0; j < np; j++) {
-            for (int i = 0; i < nc; i++) {
-                frecuencia_por_enfermedad[j] += matriz[i][j];
+        int min = 1000000;
+        int enfermedad = -1;
+        for (int i = 0; i < ne; i++) {
+            int total = 0;
+            for (int j = 0; j < nm; j++) {
+                total += matriz[j][i];
+            }
+            if (total < min) {
+                min = total;
+                enfermedad = i;
             }
         }
-        int min_frecuencia = frecuencia_por_enfermedad[0];
-        int enfermedad_menor = 0;
-        for (int j = 1; j < ne; j++) {
-            if (frecuencia_por_enfermedad[j] < min_frecuencia) {
-                min_frecuencia = frecuencia_por_enfermedad[j];
-                enfermedad_menor = j;
-            }
-        }
-
-        destruir_arreglo(frecuencia_por_enfermedad); 
-        return enfermedad_menor;
-    }
-
-    int medico_mayor(int enfermedad) {
-        int max = 0;
-        int medicom = -1;
-        for (int i = 0; i < nc; i++) {
-            if (matriz[i][enfermedad] > max) {
-                max = matriz[i][enfermedad];
-                medicom = i;
-            }
-        }
-        return medicom;
+        return enfermedad;
     }
     
-    int medico_menor(int enfermedad) {
-        int min = matriz[0][enfermedad];  
-        int medicom = 0;
-
-        for (int i = 1; i < nc; i++) {  
-            if (matriz[i][enfermedad] < min) {
-                min = matriz[i][enfermedad];
-                medicom = i;
+        // Devuelve el índice del médico con más citas en general
+    int medico_mayor() {
+        int max = -1;
+        int doctor = -1;
+        for (int j = 0; j < nm; j++) {
+            int total = 0;
+            for (int i = 0; i < ne; i++) {
+                total += matriz[j][i];
+            }
+            if (total > max) {
+                max = total;
+                doctor = j;
             }
         }
-
-        return medicom;
+        return doctor;
     }
+
+    int medico_menor() {
+        int min = 1000000;
+        int doctor = -1;
+        for (int j = 0; j < nm; j++) {
+            int total = 0;
+            for (int i = 0; i < ne; i++) {
+                total += matriz[j][i];
+            }
+            if (total < min) {
+                min = total;
+                doctor = j;
+            }
+        }
+        return doctor;
+    }
+
+    double promedio_citas() {
+        int total_citas = 0;
+        for (int j = 0; j < nm; j++) {
+            for (int i = 0; i < ne; i++) {
+                total_citas += matriz[j][i];
+            }
+        }
+        return (double) total_citas / nm;
+    }
+
+    int medico_mayor_e(int enfermedad) {
+        int max = -1;
+        int doctor = -1;
+        for (int j = 0; j < nm; j++) {
+            if (matriz[j][enfermedad] > max) {
+                max = matriz[j][enfermedad];
+                doctor = j;
+            }
+        }
+        return doctor;
+    }
+
     
 };
 
@@ -426,12 +446,14 @@ int main()
     
     cout<<"La enfermedad con mayor prevalencia es "<<eps.enfermedad_mayor()<<endl;
     cout<<"La enfermedad con menor prevalencia es "<<eps.enfermedad_menor()<<endl;
-    cout<<"El medico con mayor numero de citas es "<<eps.medico_mayor(e)<<endl;
-    cout<<"El medico con menor numero de citas es "<<eps.medico_menor(e)<<endl;
-    //cout<<"El promedio de citas por medico es "<<eps.promedio_citas()<<endl;
-    //for(int i=0; i<e; i++){
-        //cout<<"La enfermedad "<<i<<" fue atendida con mayor frecuencia por el medico "<<eps.medico_mayor_e(i)<<endl;
-    //}
+    cout<<"El medico con mayor numero de citas es "<<eps.medico_mayor()<<endl;
+    cout<<"El medico con menor numero de citas es "<<eps.medico_menor()<<endl;
+    cout<<"El promedio de citas por medico es "<<eps.promedio_citas()<<endl;
+
+for(int i=0; i<e; i++){
+    cout<<"La enfermedad "<<i<<" fue atendida con mayor frecuencia por el medico "<<eps.medico_mayor_e(i)<<endl;
+}
+
     
     return 0;
 }
