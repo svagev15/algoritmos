@@ -1,5 +1,5 @@
+//mejorar la funciones del final
 #include <iostream>
-#include <ctime>  // Para srand(time(0))
 
 using namespace std;
 
@@ -70,290 +70,368 @@ void llenar_arreglo(int* arr, int n) {
 }
 
 
-class Venta {
+class Cita {
 private:
-    int cliente;
-    int vendedor;
-    int producto;
+    int paciente;
+    int medico;
+    int enfermedad;
 public:
-    Venta() {
-        cliente = -1; 
-        vendedor = -1;
-        producto = -1;
+    Cita() {
+        paciente = -1; //por que -1?
+        medico = -1;
+        enfermedad = -1;
     }
-    Venta(int c, int v, int p) {
-        cliente = c;
-        vendedor = v;
-        producto = p;
+    Cita(int p, int m, int e) {
+        paciente = p;
+        medico = m;
+        enfermedad = e;
     }
     
     //Getters
-    int getCliente() const { 
-        return cliente; 
+    int getPaciente() const { 
+        return paciente; 
     }
-    void setCliente(int c) { 
-        cliente = c; 
+    void setPaceinte(int p) { 
+        paciente = p; 
     }
-    int getVendedor() const { 
-        return vendedor; 
+    int getMedico() const { 
+        return medico; 
     }
-    void setVendedor(int v) { 
-        vendedor = v; 
-    }
-
-    int getProducto() const { 
-        return producto; 
-    }
-    void setProducto(int p) { 
-        producto = p; 
+    void setMedico(int m) { 
+        medico = m; 
     }
 
-    Venta& operator=(const Venta& f) {
-        cliente = f.cliente;
-        vendedor = f.vendedor;
-        producto = f.producto;
+    int getEnfermedad() const { 
+        return enfermedad; 
+    }
+    void setProducto(int e) { 
+        enfermedad = e; 
+    }
+
+    Cita& operator=(const Cita& f) {
+        paciente = f.paciente;
+        medico = f.medico;
+        enfermedad = f.enfermedad;
         return *this;
     }
 
-    string to_string() const {
-        return std::to_string(cliente) + ", " + std::to_string(vendedor) + ", " + std::to_string(producto);
-    }
+    string to_string() {
+	    string s = std::to_string(paciente)+", "+std::to_string(medico)+", "+std::to_string(enfermedad);
+	    return s;
+	}
 
-    friend std::ostream& operator<<(std::ostream& os, const Venta& s) {
-        return os << s.to_string();
-    }
+	friend std::ostream& operator<<(std::ostream& os, Cita& b) {
+		return os << b.to_string();
+	}
+	
+	friend std::ostream& operator<<(std::ostream& os, Cita b) {
+		return os << b.to_string();
+	}
+
 };
 
 // Clase nodo con plantilla
-template <typename T>
-class Nodo {
+template<typename T>
+class Nodo{
 private:
-    T valor;
-    Nodo<T>* siguiente;
-public:
-    Nodo(T _valor) : valor(_valor), siguiente(nullptr) {}
+  T dato;
+  Nodo* next;
 
-    void setSiguiente(Nodo<T>* _siguiente) { this->siguiente = _siguiente; }
-    void setValor(T _valor) { this->valor = _valor; }
-    T getValor() const { return valor; }
-    Nodo<T>* getSiguiente() const { return siguiente; }
+public:
+
+ Nodo(T d){
+     dato = d;
+     next =  NULL;
+ }
+ 
+ ~Nodo(){
+ }
+ 
+ T get_dato(){
+     return dato;
+ }
+ 
+ void set_dato(T d){
+     dato = d;
+ }
+ 
+ Nodo* get_next(){
+     return next;
+ }
+ 
+ void set_next(Nodo* n){
+     next = n;
+ }
+ 
+ 
+    
 };
+
 
 // Clase lista enlazada con plantilla
 template <typename T>
-class ListaEnlazada {
+class Lista {
 private:
-    Nodo<T>* cabeza;
+    Nodo<T>* ptr;
     int size;
 public:
-    ListaEnlazada() : cabeza(nullptr), size(0) {}
-
-    ~ListaEnlazada() {
-        Nodo<T>* actual = cabeza;
-        Nodo<T>* siguiente = nullptr;
-        while(actual != nullptr) {
-            siguiente = actual->getSiguiente();
-            delete actual;
-            actual = siguiente;
+    Lista(){
+        ptr = NULL;
+        size = 0;
+    }
+  
+    ~Lista(){
+        Nodo<T>* temp = ptr;
+        if(ptr != NULL){
+            Nodo<T>* temp_next = ptr->get_next();
+            while(temp_next != NULL){
+                delete temp;
+                temp = temp_next;
+                temp_next = temp->get_next();
+            }
+            delete temp; //Borrar el último nodo
         }
     }
-
-    void insertar(const T& _valor) {
-        Nodo<T>* nuevoNodo = new Nodo<T>(_valor);
-        if(cabeza == nullptr) {
-            cabeza = nuevoNodo;
-        } else {
-            Nodo<T>* actual = cabeza;
-            while (actual->getSiguiente()) {
-                actual = actual->getSiguiente();
+    void add(T d){
+        Nodo<T>* nodo = new Nodo<T>(d);
+        
+        if(ptr == NULL){//La lista está vacía
+            ptr  = nodo;
+        }else{//La lista no está vacía
+            Nodo<T>* temp =  ptr;
+            while(temp->get_next() != NULL){
+                temp = temp->get_next();
             }
-            actual->setSiguiente(nuevoNodo);
+            temp->set_next(nodo);
         }
         size++;
     }
-
-    void insertarEnPosicion(int posicion, const T& _valor) {
-        Nodo<T>* nuevoNodo = new Nodo<T>(_valor);
-
-        if (posicion == 0) {
-            nuevoNodo->setSiguiente(cabeza);
-            cabeza = nuevoNodo;
-            return;
-        }
-
-        Nodo<T>* actual = cabeza;
-        int contador = 0;
-        while (actual != nullptr && contador < (posicion - 1)) {
-            actual = actual->getSiguiente();
-            contador++;
-        }
-
-        if (actual == nullptr) {
-            std::cout << "Posición inválida" << std::endl;
-            delete nuevoNodo;
-            return;
-        }
-
-        nuevoNodo->setSiguiente(actual->getSiguiente());
-        actual->setSiguiente(nuevoNodo);
-    }
-
-    bool eliminar(const T& _valor) {
-        Nodo<T>* actual = cabeza;
-        Nodo<T>* anterior = nullptr;
-        while (actual) {
-            if (actual->getValor() == _valor) {
-                if (anterior) {
-                    anterior->setSiguiente(actual->getSiguiente());
-                } else {
-                    cabeza = actual->getSiguiente();
+    
+    void insert(T d, int i){
+        if(i<=size && i>=0 && ptr != NULL){
+            Nodo<T>* nodo = new Nodo<T>(d);
+            if(i == 0){
+                nodo->set_next(ptr);
+                ptr = nodo;
+            }else{
+                int j = 0;
+                Nodo<T>* temp =  ptr;
+                while(j<i-1){
+                    temp = temp->get_next();
+                    j++;
                 }
-                delete actual;
-                return true;
+                nodo->set_next(temp->get_next());
+                temp->set_next(nodo);
             }
-            anterior = actual;
-            actual = actual->getSiguiente();
+            size++;
+        }else{//Si el índice es incorrecto o la lista está vacía, se añade al final
+            add(d);
         }
-        return false;
+        
     }
-
-    Nodo<T>* buscarPorValor(const T& _valor) const {
-        Nodo<T>* actual = cabeza;
-        while (actual != nullptr) {
-            if (actual->getValor() == _valor) {
-                return actual;
+    
+    int get_size(){
+        return size;
+    }
+    
+    void print(){
+        if(ptr == NULL){//La lista está vacía
+            cout<<"La lista está vacía"<<endl;
+        }else{//La lista no está vacía
+            Nodo<T>* temp =  ptr;
+            while(temp != NULL){
+                cout<<temp->get_dato()<<"\t";
+                temp = temp->get_next();
             }
-            actual = actual->getSiguiente();
+            cout<<endl;
         }
-        return nullptr;
     }
-
-    int get_size() const { return size; }
-
-    void mostrar() const {
-        Nodo<T>* actual = cabeza;
-        cout << "Lista de valores: " << endl;
-        while (actual != nullptr) {
-            cout << actual->getValor() << endl;
-            actual = actual->getSiguiente();
-        }
-        cout << "nullptr" << endl;
-    }
-
-    Nodo<T>* get(int i) const {
-        if (i >= 0 && i < size) {
-            int j = 0;
-            Nodo<T>* actual = cabeza;
-            while (j < i) {
-                actual = actual->getSiguiente();
-                j++;
+    
+    void println(){
+        if(ptr == NULL){//La lista está vacía
+            cout<<"La lista está vacía"<<endl;
+        }else{//La lista no está vacía
+            Nodo<T>* temp =  ptr;
+            while(temp != NULL){
+                cout<<temp->get_dato()<<endl;
+                temp = temp->get_next();
             }
-            return actual;
+            cout<<endl;
         }
-        return nullptr;
     }
+    
+    Nodo<T>* get(int i){
+        if(i>=0 && i<size){
+          int j=0;
+          Nodo<T>* temp = ptr;
+          while(j<i){
+              temp = temp->get_next();
+              j++;
+          }
+          return temp;
+        }
+        return NULL;
+    }
+    
 };
 
-// Clase Distribuidora
-class Distribuidora {
+
+class EPSUrsa {
 private:
-    ListaEnlazada<Venta> ventas;
+    Lista <Cita> Citas;
     int** matriz;
-    int* arreglo; // Declarar el arreglo como un miembro
-    int nc; // Número de clientes
-    int nv; // Número de vendedores
-    int np; // Número de productos
-    int ns; // Número de ventas
+    int* arreglo; 
+    int np;
+    int nm; 
+    int ne; 
+    int nc; 
 
 public:
-    Distribuidora(int c = 100, int v = 100, int p = 100, int s = 1000): nc(c), nv(v), np(p), ns(s) {
-        matriz = crear_mat(nv, np);
-        arreglo = crear_arreglo(nv);
+    EPSUrsa(int p = 100, int m = 100, int e = 100, int c = 100): np(p), nm(m), ne(e), nc(c) {
+        matriz = crear_mat(nm, ne);
+        arreglo = crear_arreglo(nc);
     }
 
-    ~Distribuidora() {
-        destruir_mat(matriz, nv);
+    ~EPSUrsa() {
+        destruir_mat(matriz, nm);
         destruir_arreglo(arreglo);
     }
 
     void init_lista() {
-        Venta* t;
-        int c, v, p;
-        for (int i = 0; i < ns; i++) {
-            c = rand() % nc;
-            v = rand() % nv;
-            p = rand() % np;
-            t=new Venta(c, v, p);
-            ventas.insertar(*t);
+        Cita* t;
+        int p; 
+        int m;
+        int e;
+        for(int i = 0; i<nc; i++){
+            p = rand()%np;
+            m = rand()%nm;
+            e = rand()%ne;
+            t = new Cita(p,m,e);
+            Citas.add(*t);
         }
-        cout << "Se han generado " << ventas.get_size() << " ventas." << endl;
-        ventas.mostrar();
+        cout<<"Fueron creadas "<<Citas.get_size()<<" en la plataforma"<<endl;
+        println();   
     }
 
     void print() {
-        ventas.mostrar();
+        Citas.print();
     }
 
-    void calcular_matriz() {
-        Nodo<Venta>* ptr = ventas.get(0);
-        for (int i = 0; i < ns; i++) {
-            matriz[ptr->getValor().getVendedor()][ptr->getValor().getProducto()]++;
-            ptr = ptr->getSiguiente();
+    void println(){
+        Citas.println();
+    }
+
+    void calc_mat() {
+        Nodo<Cita>* ptr = Citas.get(0);
+        for (int i = 0; i < nc; i++) {
+            matriz[ptr->get_dato().getMedico()][ptr->get_dato().getEnfermedad()]++;
+            ptr = ptr->get_next();
         }
-        cout << "Matriz de vendedores por producto: " << endl;
-        print_mat(matriz, nv, np);
+        cout << "Matriz de medicos por enfermdedad: " << endl;
+        print_mat(matriz, nm, ne);
     }
 
     void generar_arreglo() {
-        Nodo<Venta>* ptr = ventas.get(0);
+        Nodo<Cita>* ptr = Citas.get(0);
         while (ptr != nullptr) {
-            arreglo[ptr->getValor().getVendedor()]++;  // Incrementar el vendedor correspondiente en el arreglo
-            ptr = ptr->getSiguiente();
+            arreglo[ptr->get_dato().getEnfermedad()]++;  
+            ptr = ptr->get_next();
         }
-        cout << "Arreglo de vendedores: " << endl;
-        print_arreglo(arreglo, nv);  // Imprimir el arreglo con los vendedores y sus ventas
+        cout << "Arreglo de Citas " << endl;
+        print_arreglo(arreglo, nc);  
     }
 
-    int vendedor_con_mas_ventas_por_producto(int producto) {
-        int max = 0;
-        int vendedorm = -1;
-        for (int i = 0; i < nv; i++) {
-            if (matriz[i][producto] > max) {
-                max = matriz[i][producto];
-                vendedorm = i;
+    int enfermedad_mayor() {
+        int* frecuencia_por_enfermedad = crear_arreglo(ne); 
+
+        for (int j = 0; j < ne; j++) {
+            for (int i = 0; i < nc; i++) {
+                frecuencia_por_enfermedad[j] += matriz[i][j];
             }
         }
-        return vendedorm;
+
+        int max_frecuencia = 0;
+        int enfermedad_mayor = -1;
+        for (int j = 0; j < ne; j++) {
+            if (frecuencia_por_enfermedad[j] > max_frecuencia) {
+                max_frecuencia = frecuencia_por_enfermedad[j];
+                enfermedad_mayor = j;
+            }
+        }
+
+        destruir_arreglo(frecuencia_por_enfermedad);
+        return enfermedad_mayor;
     }
     
-     void calcular_promedio_ventas() {
-        int cont = 0;
-        float promedio, suma = 0;
-        for (int i = 0; i < nv; i++) {
-            suma = suma + arreglo[i];
-            cont = cont + 1;
+    int enfermedad_menor() {
+        int* frecuencia_por_enfermedad = crear_arreglo(ne);  
+        for (int j = 0; j < np; j++) {
+            for (int i = 0; i < nc; i++) {
+                frecuencia_por_enfermedad[j] += matriz[i][j];
+            }
         }
-        promedio = suma / cont;
-        cout << "El promedio de las ventas es: " << promedio << endl;
+        int min_frecuencia = frecuencia_por_enfermedad[0];
+        int enfermedad_menor = 0;
+        for (int j = 1; j < ne; j++) {
+            if (frecuencia_por_enfermedad[j] < min_frecuencia) {
+                min_frecuencia = frecuencia_por_enfermedad[j];
+                enfermedad_menor = j;
+            }
+        }
+
+        destruir_arreglo(frecuencia_por_enfermedad); 
+        return enfermedad_menor;
     }
+
+    int medico_mayor(int enfermedad) {
+        int max = 0;
+        int medicom = -1;
+        for (int i = 0; i < nc; i++) {
+            if (matriz[i][enfermedad] > max) {
+                max = matriz[i][enfermedad];
+                medicom = i;
+            }
+        }
+        return medicom;
+    }
+    
+    int medico_menor(int enfermedad) {
+        int min = matriz[0][enfermedad];  
+        int medicom = 0;
+
+        for (int i = 1; i < nc; i++) {  
+            if (matriz[i][enfermedad] < min) {
+                min = matriz[i][enfermedad];
+                medicom = i;
+            }
+        }
+
+        return medicom;
+    }
+    
 };
 
-int main() {
-    srand(time(0));  // Inicialización del generador de números aleatorios con el tiempo actual
-    int c = 10;
-    int v = 10;
+int main()
+{
+    srand(1234);
     int p = 10;
-    int s = 100;
-    Distribuidora dis = Distribuidora(c, v, p, s);
-    dis.init_lista();
-    cout << endl;
-    dis.calcular_matriz();
-    for (int i = 0; i < p; i++) {
-        cout << "El vendedor con más ventas en el producto " << i << " es: " 
-             << dis.vendedor_con_mas_ventas_por_producto(i) << endl;
-    }
-    cout << "-------------datos del arreglo-------------" << endl;
-    dis.generar_arreglo();
-    dis.calcular_promedio_ventas();
+    int m = 10;
+    int e = 10;
+    int c = 100;
+    EPSUrsa eps = EPSUrsa(p,m,e,c);
+    eps.init_lista();
+    
+    cout<<endl;
+    eps.calc_mat();
+    
+    cout<<"La enfermedad con mayor prevalencia es "<<eps.enfermedad_mayor()<<endl;
+    cout<<"La enfermedad con menor prevalencia es "<<eps.enfermedad_menor()<<endl;
+    cout<<"El medico con mayor numero de citas es "<<eps.medico_mayor(e)<<endl;
+    cout<<"El medico con menor numero de citas es "<<eps.medico_menor(e)<<endl;
+    //cout<<"El promedio de citas por medico es "<<eps.promedio_citas()<<endl;
+    //for(int i=0; i<e; i++){
+        //cout<<"La enfermedad "<<i<<" fue atendida con mayor frecuencia por el medico "<<eps.medico_mayor_e(i)<<endl;
+    //}
+    
     return 0;
 }
