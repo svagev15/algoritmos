@@ -207,6 +207,11 @@ int main()
     cout<<sum(m.getM())<<endl;
     cout<<sum(m)<<endl;
     cout<<m.sum()<<endl;
+
+    // Probar función find en Matriz
+    cout << "Buscando 500 en matriz: " << (m.find(500) ? "encontrado" : "no encontrado") << endl;
+    cout << "Buscando 9999 en matriz: " << (m.find(9999) ? "encontrado" : "no encontrado") << endl;
+    
     m.addFila();
     m.addColum();
     m.print();
