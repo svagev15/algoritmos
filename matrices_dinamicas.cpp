@@ -158,6 +158,16 @@ class Matriz{
         }
         return sum;
     }
+    bool find(int dato){
+        for (int i = 0; i < f; i++) {
+            for (int j = 0; j < c; j++) {
+                if(m[i][j] == dato){
+                    return true;  // Retorna true si encontró el dato
+                }
+            }
+        }
+        return false;  // Retorna false si no encontró el dato
+    }
     
 };
 
