@@ -1,46 +1,3 @@
-//poner remove, find, removeall
-
-
-#include<iostream>
-using namespace std;
-
-template <typename T>
-class Nodo{
-  T dato;
-  Nodo* next;
-public:
-    
-    Nodo(){
-        next = nullptr;
-    }
-    
-    Nodo(T d){
-        dato = d;
-        next = nullptr;
-    }
-    
-    T getDato(){
-        return dato;
-    }
-    
-    Nodo* getNext(){
-        return next;
-    }
-    
-    void setDato(T da){
-        dato = da;
-    }
-    
-    void setNext(Nodo<T>* n){
-        next = n;
-    }
-    
-    string to_string(){
-        return std::to_string(dato);
-    }
-
-};
-
 template <typename T>
 class Lista{
   Nodo<T>* ptr;
@@ -68,29 +25,30 @@ public:
     
     
     void insert(int p, int dato){
-        if (p <0 || p>size){//si la posicion es mayor al tamaño o menos a cero no se puede insertar
-            cout<<"posicion invalida " << endl;
-            return ;
+        if (p < 0 || p > size){
+            cout << "Posición inválida" << endl;
+            return;
         }
-        Nodo<T> *nodonuevo = new Nodo<T>(dato); //se crea el nuevo nodo en donde se alamcena el elemtneo que inserte el usuario
-        
-        if (p==0){//si quiereo insertar el dato al inicio 
-            nuevoNodo -> setNext(ptr);
+    
+        Nodo<T> *nuevoNodo = new Nodo<T>(dato); // <-- corregido
+    
+        if (p == 0){
+            nuevoNodo->setNext(ptr); // <-- ahora coincide
             ptr = nuevoNodo;
         }
         else {
-            Nodo<T>* temp = ptr; // se crea un nodo ¿temporal para recorreer y empezamos desde el primero
-            int i =0;
-
-            while(i< p-1 ){ // mientras no lleguemos al final
-                temp = temp->getNext(); // avanzamos al siguiente
+            Nodo<T>* temp = ptr;
+            int i = 0;
+            while (i < p - 1) {
+                temp = temp->getNext();
+                i++;
             }
-            nuevoNodo->setNext(temp->getNext());//el nuevo nodo apunta al que estaba despues de temp
-            temp->setNext(nuevoNodo);//el anterior a temp apunta al nuevo nodo
+            nuevoNodo->setNext(temp->getNext());
+            temp->setNext(nuevoNodo);
         }
-            
-        }
+        size++;
     }
+
 
     
     void print(){
