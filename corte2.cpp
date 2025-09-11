@@ -3,11 +3,10 @@ using namespace std;
 
 class VectorDinamico {
 private:
-    int* v;           // Puntero al arreglo dinámico
-    int size;         // Cantidad actual de elementos
-    int capacidad;    // Capacidad máxima antes de redimensionar
+    int* v;
+    int size;
+    int capacidad;
 
-    // Función privada para redimensionar
     void resize(int nuevaCapacidad) {
         int* nuevoVector = new int[nuevaCapacidad];
         for (int i = 0; i < size; i++) {
@@ -19,7 +18,6 @@ private:
     }
 
 public:
-    // Constructor con capacidad inicial
     VectorDinamico(int capInicial) {
         if (capInicial <= 0) capInicial = 1;
         capacidad = capInicial;
@@ -54,7 +52,6 @@ public:
         size++;
     }
 
-    // Eliminar TODAS las ocurrencias de un elemento
     void deleteElemento(int valor) {
         int nuevosize = 0;
         for (int i = 0; i < size; i++) {
@@ -88,22 +85,49 @@ public:
         }
         cout << "]" << endl;
     }
-    void selectionSort(){
+
+    void selectionSort() {
         for (int i = 0; i < size - 1; i++) {
             int Minindex = i;
-            for (int j = i + 1; j<size;j++){
-                if (v[j]<v[Minindex]){
+            for (int j = i + 1; j < size; j++) {
+                if (v[j] < v[Minindex]) {
                     Minindex = j;
                 }
             }
-            if (Minindex != i){
+            if (Minindex != i) {
                 int temp = v[i];
                 v[i] = v[Minindex];
                 v[Minindex] = temp;
-                
             }
-        }    
+        }
     }
+
+    void bubbleSort(){
+        int temp;
+        for (int i =0; i<size-1;i++){
+            for (int j =i+1; j < size -1; j++){
+                if (v[i]>v[j]){
+                    temp = v[j];
+                    v[j] = v[i];
+                    v[i] = temp; 
+                }
+            }
+        }
+    }
+    
+    void insertSort(){
+        int temp;
+        for (int i =0; i<size-1;i++){
+            for (int j =i+1; j < size; j++){
+                if (v[j]<v[i]){
+                    temp = v[i];
+                    v[i] = v[j];
+                    v[j] = temp; 
+                }
+            }
+        }
+    }
+    
 };
 
 int main() {
@@ -113,7 +137,6 @@ int main() {
 
     VectorDinamico vec(capacidadInicial);
 
-    // Llenar el vector inicial
     int elementosIniciales;
     cout << "¿Cuántos elementos desea agregar inicialmente? ";
     cin >> elementosIniciales;
@@ -127,7 +150,6 @@ int main() {
     cout << "Vector inicial: ";
     vec.imprimir();
 
-    // Menú interactivo
     int opcion;
     do {
         cout << "\n--- MENU ---\n";
@@ -137,6 +159,8 @@ int main() {
         cout << "4. Eliminar elemento por posición\n";
         cout << "5. Imprimir vector\n";
         cout << "6. Ordenar vector con Selection Sort\n";
+        cout << "7. Ordenar vector con Bubble Sort\n";
+        cout << "8. Ordenar vector con insert Sort\n";
         cout << "0. Salir\n";
         cout << "Seleccione una opción: ";
         cin >> opcion;
@@ -171,8 +195,20 @@ int main() {
             vec.imprimir();
         }
         else if (opcion == 6) {
-            cout << "Ordenando vector..." << endl;
+            cout << "Ordenando vector con Selection Sort..." << endl;
             vec.selectionSort();
+            cout << "Vector ordenado: ";
+            vec.imprimir();
+        }
+        else if (opcion == 7) {
+            cout << "Ordenando vector con Bubble Sort..." << endl;
+            vec.bubbleSort();
+            cout << "Vector ordenado: ";
+            vec.imprimir();
+        }
+        else if (opcion == 8) {
+            cout << "Ordenando vector con insert Sort..." << endl;
+            vec.insertSort();
             cout << "Vector ordenado: ";
             vec.imprimir();
         }
