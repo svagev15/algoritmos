@@ -85,6 +85,17 @@ public:
         }
         cout << "]" << endl;
     }
+    
+    int binomialSearch(int valor, int izquierda = 0, int derecha = -1) {
+        if (derecha == -1) derecha = size - 1;
+        if (izquierda > derecha) return -1; // No encontrado
+        int medio = izquierda + (derecha - izquierda) / 2;
+        if (v[medio] == valor) return medio;
+        if (v[medio] > valor)
+            return binomialSearch(valor, izquierda, medio - 1);
+        else
+            return binomialSearch(valor, medio + 1, derecha);
+    }
 
     void selectionSort() {
         for (int i = 0; i < size - 1; i++) {
@@ -161,6 +172,7 @@ int main() {
         cout << "6. Ordenar vector con Selection Sort\n";
         cout << "7. Ordenar vector con Bubble Sort\n";
         cout << "8. Ordenar vector con insert Sort\n";
+        cout << "9. Buscar elemento con Binomial Search (búqueda binaria recursiva)\n";
         cout << "0. Salir\n";
         cout << "Seleccione una opción: ";
         cin >> opcion;
@@ -211,6 +223,16 @@ int main() {
             vec.insertSort();
             cout << "Vector ordenado: ";
             vec.imprimir();
+        }
+        else if (opcion == 9) {
+            int valor;
+            cout << "Ingrese el valor a buscar (vector debe estar ordenado): ";
+            cin >> valor;
+            int idx = vec.binomialSearch(valor);
+            if (idx == -1)
+                cout << "No encontrado\n";
+            else
+                cout << "Encontrado en posición: " << idx << endl;
         }
     } while (opcion != 0);
 
