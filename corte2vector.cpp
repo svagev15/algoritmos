@@ -1,4 +1,6 @@
 #include <iostream>
+# include<vector>
+#include <algorithm>
 using namespace std;
 
 class VectorDinamico {
@@ -139,6 +141,102 @@ public:
         }
     }
     
+    // Quick Sort Helper
+    void quickSortHelper(int left, int right) {
+        if (left >= right) return;
+        int pivot = v[right];
+        int i = left - 1;
+        for (int j = left; j < right; j++) {
+            if (v[j] < pivot) {
+                i++;
+                swap(v[i], v[j]);
+            }
+        }
+        swap(v[i + 1], v[right]);
+        quickSortHelper(left, i);
+        quickSortHelper(i + 2, right);
+    }
+    void quickSort() {
+        quickSortHelper(0, size - 1);
+    }
+    
+    // Heap Sort Helper
+    void heapify(int n, int i) {
+        int largest = i;
+        int l = 2 * i + 1;
+        int r = 2 * i + 2;
+        if (l < n && v[l] > v[largest]) largest = l;
+        if (r < n && v[r] > v[largest]) largest = r;
+        if (largest != i) {
+            swap(v[i], v[largest]);
+            heapify(n, largest);
+        }
+    }
+    void heapSort() {
+        for (int i = size / 2 - 1; i >= 0; i--)
+            heapify(size, i);
+        for (int i = size - 1; i > 0; i--) {
+            swap(v[0], v[i]);
+            heapify(i, 0);
+        }
+    }
+    
+    // Merge Sort Helper
+    void merge(int l, int m, int r) {
+        int n1 = m - l + 1;
+        int n2 = r - m;
+        int* L = new int[n1];
+        int* R = new int[n2];
+        for (int i = 0; i < n1; i++)
+            L[i] = v[l + i];
+        for (int j = 0; j < n2; j++)
+            R[j] = v[m + 1 + j];
+        int i = 0, j = 0, k = l;
+        while (i < n1 && j < n2) {
+            if (L[i] <= R[j]) v[k++] = L[i++];
+            else v[k++] = R[j++];
+        }
+        while (i < n1) v[k++] = L[i++];
+        while (j < n2) v[k++] = R[j++];
+        delete[] L;
+        delete[] R;
+    }
+    void mergeSortHelper(int l, int r) {
+        if (l < r) {
+            int m = l + (r - l) / 2;
+            mergeSortHelper(l, m);
+            mergeSortHelper(m + 1, r);
+            merge(l, m, r);
+        }
+    }
+    void mergeSort() {
+        mergeSortHelper(0, size - 1);
+    }
+    
+    // Bucket Sort
+    void bucketSort() {
+        if (size <= 0) return;
+        int minValue = v[0];
+        int maxValue = v[0];
+        for (int i = 1; i < size; i++) {
+            if (v[i] < minValue) minValue = v[i];
+            else if (v[i] > maxValue) maxValue = v[i];
+        }
+        int bucketCount = (maxValue - minValue) / size + 1;
+        vector<vector<int>> buckets(bucketCount);
+        for (int i = 0; i < size; i++) {
+            int idx = (v[i] - minValue) / size;
+            buckets[idx].push_back(v[i]);
+        }
+        int idx = 0;
+        for (int i = 0; i < bucketCount; i++) {
+            sort(buckets[i].begin(), buckets[i].end());
+            for (int j = 0; j < buckets[i].size(); j++) {
+                v[idx++] = buckets[i][j];
+            }
+        }
+    }
+    
 };
 
 int main() {
@@ -171,8 +269,12 @@ int main() {
         cout << "5. Imprimir vector\n";
         cout << "6. Ordenar vector con Selection Sort\n";
         cout << "7. Ordenar vector con Bubble Sort\n";
-        cout << "8. Ordenar vector con insert Sort\n";
+        cout << "8. Ordenar vector con Insert Sort\n";
         cout << "9. Buscar elemento con Binomial Search (búqueda binaria recursiva)\n";
+        cout << "10. Ordenar vector con Quick Sort\n";
+        cout << "11. Ordenar vector con Heap Sort\n";
+        cout << "12. Ordenar vector con Merge Sort\n";
+        cout << "13. Ordenar vector con Bucket Sort\n";
         cout << "0. Salir\n";
         cout << "Seleccione una opción: ";
         cin >> opcion;
@@ -219,7 +321,7 @@ int main() {
             vec.imprimir();
         }
         else if (opcion == 8) {
-            cout << "Ordenando vector con insert Sort..." << endl;
+            cout << "Ordenando vector con Insert Sort..." << endl;
             vec.insertSort();
             cout << "Vector ordenado: ";
             vec.imprimir();
@@ -233,6 +335,30 @@ int main() {
                 cout << "No encontrado\n";
             else
                 cout << "Encontrado en posición: " << idx << endl;
+        }
+        else if (opcion == 10) {
+            cout << "Ordenando vector con Quick Sort..." << endl;
+            vec.quickSort();
+            cout << "Vector ordenado: ";
+            vec.imprimir();
+        }
+        else if (opcion == 11) {
+            cout << "Ordenando vector con Heap Sort..." << endl;
+            vec.heapSort();
+            cout << "Vector ordenado: ";
+            vec.imprimir();
+        }
+        else if (opcion == 12) {
+            cout << "Ordenando vector con Merge Sort..." << endl;
+            vec.mergeSort();
+            cout << "Vector ordenado: ";
+            vec.imprimir();
+        }
+        else if (opcion == 13) {
+            cout << "Ordenando vector con Bucket Sort..." << endl;
+            vec.bucketSort();
+            cout << "Vector ordenado: ";
+            vec.imprimir();
         }
     } while (opcion != 0);
 
