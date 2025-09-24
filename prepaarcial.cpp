@@ -471,7 +471,6 @@ public:
     }
 };
 
-// El main permanece igual
 int main()
 {
     srand(1234);
@@ -482,7 +481,81 @@ int main()
     Curso* tc = nullptr;
     Estudiante* te = nullptr;
     
-    // ... (el main permanece exactamente igual)
+    //10 estudiantes, 6 notas
+    tc = new Curso(0, numNotas+1, numEstudiantes);
+    for (int j = 0; j < numEstudiantes; j++) {
+        te = nullptr;
+        te = new Estudiante(0 * (numEstudiantes) + j, numNotas+1);
+        for (int k = 0; k < numNotas+1; k++) {
+            te->addNota((float)(rand() % 51) / 10);
+        }
+        tc->addEstudiante(*te);
+    }
+    r.addCurso(*tc);
     
+    //11 estudiantes
+    tc = new Curso(1, numNotas, numEstudiantes+1);
+    for (int j = 0; j < numEstudiantes; j++) {
+        te = nullptr;
+        te = new Estudiante(1 * (numEstudiantes+1) + j, numNotas);
+        for (int k = 0; k < numNotas; k++) {
+            te->addNota((float)(rand() % 51) / 10);
+        }
+        tc->addEstudiante(*te);
+    }
+    r.addCurso(*tc);
+
+    //10 estudiantes
+    tc = new Curso(2, numNotas, numEstudiantes);
+    for (int j = 0; j < numEstudiantes; j++) {
+        te = nullptr;
+        te = new Estudiante(2 * (numEstudiantes) + j, numNotas);
+        for (int k = 0; k < numNotas; k++) {
+            te->addNota((float)(rand() % 51) / 10);
+        }
+        tc->addEstudiante(*te);
+    }
+    r.addCurso(*tc);
+    
+    //10 estudiantes
+    tc = new Curso(3, numNotas, numEstudiantes);
+    for (int j = 0; j < numEstudiantes; j++) {
+        te = nullptr;
+        te = new Estudiante(3 * (numEstudiantes) + j, numNotas);
+        for (int k = 0; k < numNotas; k++) {
+            te->addNota((float)(rand() % 51) / 10);
+        }
+        tc->addEstudiante(*te);
+    }
+    r.addCurso(*tc);
+    
+    //13 estudiantes
+    tc = new Curso(4, numNotas, numEstudiantes+3);
+    for (int j = 0; j < numEstudiantes+3; j++) {
+        te = nullptr;
+        te = new Estudiante(4 * (numEstudiantes+3) + j, numNotas);
+        for (int k = 0; k < numNotas; k++) {
+            te->addNota((float)(rand() % 51) / 10);
+        }
+        tc->addEstudiante(*te);
+    }
+    r.addCurso(*tc);
+
+    cout << r;
+    
+    //Criterios de ordenamiento de los cursos
+    r.setOrdOrderAsc();
+    r.setOrdAtrib(-1);
+    
+    cout<<endl;
+    cout<<"*********** Vector de cursos ordenados **************"<<endl;
+    cout<<endl;
+    
+    r.sort();
+    
+    cout << r;
+
+
+
     return 0;
 }
